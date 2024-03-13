@@ -56,12 +56,12 @@ struct MODULE_INFORMATION {
 
 
 void LoRa_Init(uint8_t Rx_Pin, uint8_t Tx_Pin, uint8_t AUX_Pin, uint8_t M0_Pin, uint8_t M1_Pin, enum UART_BPS_RATE bpsRate);
-void setConfiguration(UART_HandleTypeDef *huart, struct CONFIG Configuration, enum PROGRAM_COMMAND saveType);
-uint8_t getConfiguration(UART_HandleTypeDef *huart);
-uint8_t getModuleInformation(UART_HandleTypeDef *huart);
+void setConfiguration(UART_HandleTypeDef *huart, struct CONFIG Configuration /*,enum PROGRAM_COMMAND saveType*/);
+void getConfiguration(UART_HandleTypeDef *huart);
+void getModuleInformation(UART_HandleTypeDef *huart);
 void resetModule(UART_HandleTypeDef *huart);
-void sendFixedMessage(uint8_t ADDH, uint8_t ADDL, uint8_t CHAN, void* message);
-uint8_t receiveMessage(void);
+void sendFixedMessage(UART_HandleTypeDef *huart, uint8_t ADDH, uint8_t ADDL, uint8_t CHAN, uint8_t message);
+void receiveMessage(UART_HandleTypeDef *huart);
 void cleanUARTBuffer(UART_HandleTypeDef *huart);
 void setLoRaMode(uint8_t M0_Pin, uint8_t M1_Pin, enum MODE_TYPE mode);
 //void waitCompleteResponse(void);
