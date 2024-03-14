@@ -59,26 +59,6 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-  uint8_t HEAD = 0xc0;
-  uint8_t *pHEAD = &HEAD;
-  uint8_t ADDL = 0x1D;
-  uint8_t *pADDL = &ADDL;
-  uint8_t ADDH = 0;
-  uint8_t *pADDH = &ADDH;
-  uint8_t SPED = 0x1A;
-  uint8_t *pSPED = &SPED;
-  uint8_t CHAN  = 0x17; 
-  uint8_t *pCHAN = &CHAN;
-  uint8_t OPTION = 0xC4;
-  uint8_t *pOPTION = &OPTION;
-  uint8_t getConfig = 0xc1;
-  uint8_t *pgetConfig = &getConfig;
-  uint8_t receivedConfig[48];
-  uint8_t MSG = 31;
-  uint8_t *pMSG = &MSG;
-  uint8_t receivedMSG[10];
-
-
 
 /* USER CODE END 0 */
 
@@ -89,6 +69,19 @@ static void MX_USART1_UART_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  struct CONFIG config;
+  config.HEAD = SET_CFG_PWR_DWN_SAVE;
+  config.ADDH = 0;
+  config.ADDL = 0x1E;
+  config.CHAN = 0x17;
+  config.SPED.AirDataRate = AIR_DATA_RATE_010_24;
+  config.SPED.UartBaudRate = UART_BPS_9600;
+  config.SPED.UartParity = UART_PARITY_NONE;
+  config.OPTION.FEC = FEC_1_ON;
+  config.OPTION.FixedTransmission = FT_FIXED_TRANSMISSION;
+  config.OPTION.IODriveMode = IO_D_MODE_PUSH_PULLS_PULL_UPS;
+  config.OPTION.WirelessWakeupTime = WAKE_UP_250;
+  config.OPTION.TransmissionPower = POWER_30;
   
   /* USER CODE END 1 */
 
@@ -113,9 +106,8 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, 0);
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
   
+
   
   /* USER CODE END 2 */
 
@@ -126,13 +118,21 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    
+    //HAL_UART_Receive(&huart2, receivedConfig, 64, 1);
     /*
-    HAL_UART_Transmit(&huart2, pgetConfig, sizeof(getConfig), 1);
-    HAL_UART_Transmit(&huart2, pgetConfig, sizeof(getConfig), 1);
-    HAL_UART_Transmit(&huart2, pgetConfig, sizeof(getConfig), 1);
-    HAL_UART_Receive(&huart2, receivedConfig, 64, 1);
+    sendFixedMessage(&huart2, 0x0, 0x1D, 0x17, 150);
+    HAL_Delay(10);
+    sendFixedMessage(&huart2, 0x0, 0x1D, 0x17, ';');
+    HAL_Delay(10);
+    sendFixedMessage(&huart2, 0x0, 0x1D, 0x17, 250);
+    HAL_Delay(10);
+    sendFixedMessage(&huart2, 0x0, 0x1D, 0x17, ';');
     HAL_Delay(1000);
     */
+    receiveMessage(&huart2);
+    HAL_Delay(100);
+    
     /*
    HAL_UART_Transmit(&huart2, pHEAD, sizeof(HEAD), 1);
    HAL_UART_Transmit(&huart2, pADDH, sizeof(ADDH), 1);
@@ -150,8 +150,8 @@ int main(void)
     HAL_Delay(1000);
     MSG++;
   */
-    HAL_UART_Receive(&huart2, receivedMSG ,10, 1);
-    HAL_Delay(1500);
+    
+
   }
   /* USER CODE END 3 */
 }

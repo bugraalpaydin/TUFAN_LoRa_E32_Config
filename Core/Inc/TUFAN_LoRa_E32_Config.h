@@ -13,10 +13,10 @@ enum MODE_TYPE {
 
 enum PROGRAM_COMMAND {
     SET_CFG_PWR_DWN_SAVE    = 0xC0,     //Set config, save it when power off
-    READ_CONFIGURATION      = 0xC1,     //Send three 0xC1, module returns the saved parameters   
+    // READ_CONFIGURATION      = 0xC1,     //Send three 0xC1, module returns the saved parameters   
     SET_CFG_PWR_DWN_LOSE    = 0xC2,     //Set config, do not save it when power off
-    READ_MODULE_VERSION     = 0xC3,     //Send three 0xC3, module returns the version informations
-    RESET_MODULE            = 0xC4      //Send three 0xC4, module will reset one time 
+    // READ_MODULE_VERSION     = 0xC3,     //Send three 0xC3, module returns the version informations
+    // RESET_MODULE            = 0xC4      //Send three 0xC4, module will reset one time 
 };
 
 
@@ -55,8 +55,8 @@ struct MODULE_INFORMATION {
 
 
 
-void LoRa_Init(uint8_t Rx_Pin, uint8_t Tx_Pin, uint8_t AUX_Pin, uint8_t M0_Pin, uint8_t M1_Pin, enum UART_BPS_RATE bpsRate);
-void setConfiguration(UART_HandleTypeDef *huart, struct CONFIG Configuration /*,enum PROGRAM_COMMAND saveType*/);
+void LoRa_Init(uint8_t Rx_Pin, uint8_t Tx_Pin, uint8_t AUX_Pin, uint8_t M0_Pin, uint8_t M1_Pin);
+void setConfiguration(struct CONFIG Configuration);
 void getConfiguration(UART_HandleTypeDef *huart);
 void getModuleInformation(UART_HandleTypeDef *huart);
 void resetModule(UART_HandleTypeDef *huart);
