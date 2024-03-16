@@ -76,11 +76,15 @@ void sendFixedMessage(UART_HandleTypeDef *huart, uint8_t ADDH, uint8_t ADDL, uin
 }
 
 void receiveMessage(UART_HandleTypeDef *huart){
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, 0);
     uint8_t RxMessage;
     uint8_t *pRXMessage = &RxMessage;
     HAL_UART_Receive(huart, pRXMessage, sizeof(1), 1);
 
 }
 void cleanUARTBuffer(UART_HandleTypeDef *huart){
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, 0);
     HAL_UART_Receive_IT(huart, (uint8_t *)NULL, 0);
 }
